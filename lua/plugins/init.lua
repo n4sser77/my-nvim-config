@@ -40,22 +40,58 @@ return {
   },
   {
     "nvim-treesitter/nvim-treesitter",
-    opts = {
-      ensure_installed = {
-        "vim",
-        "lua",
-        "vimdoc",
-        "html",
-        "css",
-        "typescript",
-        "tsx",
-        -- C# development
-        "c_sharp",
-        "xml",
-        "json",
-        "yaml",
-      },
-    },
+    opts = function(_, opts)
+      -- 1. Lägg till dina mappar i ignored_dirs (fixad syntax med '=')
+      opts.filesystem_watchers = {
+        enable = true,
+        debounce_delay = 50,
+        ignored_dirs = {
+          "bin",
+          "obj",
+          "%.git",
+          "node_modules",
+        },
+      }
+
+      -- 2. Lägg till dina språk i listan istället för att skriva över den
+      if type(opts.ensure_installed) == "table" then
+        vim.list_extend(opts.ensure_installed, {
+          "vim",
+          "lua",
+          "vimdoc",
+          "html",
+          "css",
+          "typescript",
+          "tsx",
+          "c_sharp",
+          "xml",
+          "json",
+          "yaml",
+          "razor",
+        })
+      else
+        -- Om listan inte finns sen tidigare (ovanligt i LazyVim)
+        opts.ensure_installed = {
+          "vim",
+          "lua",
+          "vimdoc",
+          "html",
+          "css",
+          "typescript",
+          "tsx",
+          "c_sharp",
+          "xml",
+          "json",
+          "yaml",
+          "razor",
+        }
+      end
+
+      -- 3. Aktivera highlight (behåller default för övriga highlight-options)
+      opts.highlight = opts.highlight or {}
+      opts.highlight.enable = true
+      opts.highlight.additional_vim_regex_highlighting = { "razor" }
+    end,
   },
   {
     "pmizio/typescript-tools.nvim",
