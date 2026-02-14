@@ -36,4 +36,23 @@ vim.schedule(function()
   require "mappings"
 end)
 
-require("plugins.dap")
+require "plugins.dap"
+
+if vim.fn.has "win32" == 1 then
+  -- Option 1: Using the 8.3 short path to avoid "Program Files" space issues
+  vim.opt.shell = "C:/PROGRA~1/Git/bin/bash.exe"
+
+  -- Option 2: If you prefer the full path, use backslash-escaped spaces:
+  -- vim.opt.shell = "C:/Program\\ Files/Git/bin/bash.exe"
+
+  -- These flags ensure bash starts as an interactive login shell
+  vim.opt.shellcmdflag = "-i -l -c"
+
+  -- Essential for redirecting output correctly in a Bash environment on Windows
+  vim.opt.shellredir = ">%s 2>&1"
+  vim.opt.shellquote = ""
+  vim.opt.shellxquote = ""
+
+  -- Recommended for forward-slash compatibility in internal commands
+  vim.opt.shellslash = true
+end
