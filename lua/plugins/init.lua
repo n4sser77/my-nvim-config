@@ -203,16 +203,7 @@ return {
       return opts
     end,
   },
-  {
-    "mfussenegger/nvim-dap",
-  },
-  {
-    "rcarriga/nvim-dap-ui",
-    dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" },
-    config = function()
-      require("dapui").setup()
-    end,
-  },
+
   {
     "GustavEikaas/easy-dotnet.nvim",
     dependencies = {
@@ -225,7 +216,7 @@ return {
       dotnet.setup {
         -- 1. Disabling conflicts (Correct)
         lsp = { enabled = false },
-        debugger = { auto_register_dap = false },
+        debugger = { auto_register_dap = true },
 
         -- 2. Test Runner (Correct)
         test_runner = {
