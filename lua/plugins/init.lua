@@ -51,6 +51,7 @@ return {
           "%.git",
           "node_modules",
         },
+
       }
 
       -- 2. Lägg till dina språk i listan istället för att skriva över den
@@ -91,6 +92,39 @@ return {
       opts.highlight = opts.highlight or {}
       opts.highlight.enable = true
       opts.highlight.additional_vim_regex_highlighting = { "razor" }
+    end,
+  },
+
+  {
+    "nvim-telescope/telescope.nvim",
+    opts = function(_, opts)
+      -- Vi lägger till inställningar i 'defaults' utan att röra resten
+      opts.defaults = opts.defaults or {}
+      opts.defaults.hidden = true
+      opts.defaults.no_ignore = true
+
+      -- Vi kan också lägga till det specifikt för 'find_files' pickern
+      opts.pickers = opts.pickers or {}
+      opts.pickers.find_files = {
+        hidden = true,
+        no_ignore = true,
+      }
+
+      return opts
+    end,
+  },
+  {
+    "nvim-tree/nvim-tree.lua",
+    opts = function(_, opts)
+      -- Vi behåller allt NvChad har ställt in, men ändrar bara filtren
+      opts.filters = opts.filters or {}
+      opts.filters.dotfiles = false
+      opts.filters.git_ignored = false
+
+      -- Om du vill dölja specifika mappar ändå:
+      opts.filters.custom = { "node_modules", ".git" }
+
+      return opts
     end,
   },
   {
@@ -277,12 +311,12 @@ return {
       "ResuReset",
     },
     keys = {
-      { "<leader>rt", "<cmd>ResuToggle<cr>", desc = "Resu: Toggle review" },
-      { "<leader>ra", "<cmd>ResuAccept<cr>", desc = "Resu: Accept changes" },
-      { "<leader>rd", "<cmd>ResuDecline<cr>", desc = "Resu: Decline changes" },
-      { "<leader>rA", "<cmd>ResuAcceptAll<cr>", desc = "Resu: Accept all" },
+      { "<leader>rt", "<cmd>ResuToggle<cr>",     desc = "Resu: Toggle review" },
+      { "<leader>ra", "<cmd>ResuAccept<cr>",     desc = "Resu: Accept changes" },
+      { "<leader>rd", "<cmd>ResuDecline<cr>",    desc = "Resu: Decline changes" },
+      { "<leader>rA", "<cmd>ResuAcceptAll<cr>",  desc = "Resu: Accept all" },
       { "<leader>rD", "<cmd>ResuDeclineAll<cr>", desc = "Resu: Decline all" },
-      { "<leader>rr", "<cmd>ResuRefresh<cr>", desc = "Resu: Refresh" },
+      { "<leader>rr", "<cmd>ResuRefresh<cr>",    desc = "Resu: Refresh" },
     },
     config = function()
       require("resu").setup {
