@@ -7,6 +7,7 @@ local options = {
     typescriptreact = { "biome" },
     javascript = { "biome" },
     javascriptreact = { "biome" },
+    json = { "jsonfix", "prettier" },
     -- csharp: Use LSP (Roslyn) for formatting via lsp_fallback
   },
 

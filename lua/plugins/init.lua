@@ -16,6 +16,11 @@ return {
   -- test new blink
   { import = "nvchad.blink.lazyspec" },
 
+  {
+    "b0o/SchemaStore.nvim",
+    lazy = true, -- Den laddas när den behövs
+  },
+
   -- 2. CONFIGURE BLINK FOR C# NUGETS
 
   {
@@ -95,24 +100,36 @@ return {
     end,
   },
 
+
   {
     "nvim-telescope/telescope.nvim",
     opts = function(_, opts)
-      -- Vi lägger till inställningar i 'defaults' utan att röra resten
       opts.defaults = opts.defaults or {}
-      opts.defaults.hidden = true
-      opts.defaults.no_ignore = true
+      opts.defaults.hidden = true    -- Visa dolda filer (dotfiles)
+      opts.defaults.no_ignore = true -- Sök även i filer som ignoreras av .gitignore
 
-      -- Vi kan också lägga till det specifikt för 'find_files' pickern
+      -- Filtrera bort "clutter" manuellt med Lua regex
+      opts.defaults.file_ignore_patterns = {
+        "%.git/",        -- Ignorerar hela .git-mappen
+        "node_modules/", -- Ignorerar node_modules
+        "%.idea/",       -- JetBrains/IntelliJ filer
+        "%.vscode/",     -- VS Code inställningar
+        "%.DS_Store",    -- macOS systemfiler
+        "target/",       -- Rust/Java build-filer
+        "build/",        -- Allmänna build-mappar
+        "dist/",         -- Distribution-filer
+      }
+
       opts.pickers = opts.pickers or {}
       opts.pickers.find_files = {
         hidden = true,
-        no_ignore = true,
+        -- no_ignore = false, -- Tips: Sätt till false om du vill att .gitignore ska gälla här
       }
 
       return opts
     end,
-  },
+  }
+  ,
   {
     "nvim-tree/nvim-tree.lua",
     opts = function(_, opts)
@@ -122,7 +139,7 @@ return {
       opts.filters.git_ignored = false
 
       -- Om du vill dölja specifika mappar ändå:
-      opts.filters.custom = { "node_modules", ".git" }
+      opts.filters.custom = { "node_modules" }
 
       return opts
     end,

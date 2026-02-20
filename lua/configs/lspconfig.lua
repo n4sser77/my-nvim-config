@@ -10,15 +10,30 @@ if has_blink then
 end
 
 -- LSP Servers configuration using vim.lsp.config (Neovim 0.11+)
-local servers = { "html", "cssls" }
+local servers = { "html", "cssls", "jsonls" }
 
 for _, lsp in ipairs(servers) do
-  -- Define the LSP configuration using vim.lsp.config
-  vim.lsp.config[lsp] = {
+  -- Specifik konfiguration för JSON
+  local config = {
     capabilities = capabilities,
     on_attach = on_attach,
+    settings = {}, -- Initiera tom settings
   }
-  
+
+  if lsp == "jsonls" then
+    -- Kolla om SchemaStore finns installerat
+    local has_schemastore, schemastore = pcall(require, "schemastore")
+    config.settings = {
+      json = {
+        schemas = has_schemastore and schemastore.json.schemas() or {},
+        validate = { enable = true },
+      },
+    }
+  end
+
+  -- Define the LSP configuration using vim.lsp.config
+  vim.lsp.config[lsp] = config;
+
   -- Enable the LSP server
   vim.lsp.enable(lsp)
 end
