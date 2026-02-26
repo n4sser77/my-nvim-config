@@ -10,6 +10,17 @@ return {
 
     dapui.setup()
 
+    local netcoredbg_bin = vim.fn.exepath "netcoredbg"
+    if netcoredbg_bin == "" then
+      netcoredbg_bin = "netcoredbg"
+    end
+
+    dap.adapters.coreclr = {
+      type = "executable",
+      command = netcoredbg_bin,
+      args = { "--interpreter=vscode" },
+    }
+
     -- =========================================================
     -- CONFIGURATIONS
     -- =========================================================
