@@ -7,6 +7,7 @@ M.base46 = {
     hl_override = {
         Comment = { italic = true },
         ["@comment"] = { italic = true },
+        Visual = { bg = "#2d4263" },
 
         -- =========================
         -- Render Markdown

@@ -107,6 +107,7 @@ return {
     {
         "Megatherium/continue.nvim",
         lazy = false,
+        submodules = false,
     },
 
     {
@@ -344,6 +345,8 @@ return {
                 "prettier",
                 -- XML
                 "lemminx",
+                -- Lua
+                "stylua",
             }
 
             for _, server in ipairs(necessary_servers) do

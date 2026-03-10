@@ -78,18 +78,16 @@ if has_blink then
 end
 
 -- LSP Servers configuration using vim.lsp.config (Neovim 0.11+)
-local servers = { "html", "cssls", "jsonls", "markdown_oxide" }
+local servers = { "html", "cssls", "jsonls", "markdown_oxide", "lua_ls", "gopls" }
 
 for _, lsp in ipairs(servers) do
-  -- Specifik konfiguration för JSON
   local config = {
     capabilities = capabilities,
     on_attach = on_attach,
-    settings = {}, -- Initiera tom settings
+    settings = {},
   }
 
   if lsp == "jsonls" then
-    -- Kolla om SchemaStore finns installerat
     local has_schemastore, schemastore = pcall(require, "schemastore")
     config.settings = {
       json = {
@@ -107,10 +105,33 @@ for _, lsp in ipairs(servers) do
     })
   end
 
-  -- Define the LSP configuration using vim.lsp.config
-  vim.lsp.config[lsp] = config
+  if lsp == "lua_ls" then
+    config.settings = {
+      Lua = {
+        diagnostics = { globals = { "vim" } },
+        workspace = {
+          library = {
+            vim.fn.expand "$VIMRUNTIME/lua",
+            vim.fn.stdpath "config" .. "/lua",
+          },
+          checkThirdParty = false,
+        },
+        telemetry = { enable = false },
+      },
+    }
+  end
 
-  -- Enable the LSP server
+  if lsp == "gopls" then
+    config.settings = {
+      gopls = {
+        analyses = { unusedparams = true },
+        staticcheck = true,
+        gofumpt = true,
+      },
+    }
+  end
+
+  vim.lsp.config[lsp] = config
   vim.lsp.enable(lsp)
 end
 
