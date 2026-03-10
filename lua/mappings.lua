@@ -3,7 +3,29 @@ require "nvchad.mappings"
 -- add yours here
 
 local map = vim.keymap.set
--- mappings.lua
+
+-- ============================================================
+-- Diagnostic Navigation
+-- ============================================================
+map("n", "]d", function()
+  vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR })
+end, { desc = "Next diagnostic error" })
+map("n", "[d", function()
+  vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.ERROR })
+end, { desc = "Previous diagnostic error" })
+map("n", "]w", function()
+  vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.WARN })
+end, { desc = "Next diagnostic warning" })
+map("n", "[w", function()
+  vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.WARN })
+end, { desc = "Previous diagnostic warning" })
+
+-- Show all diagnostics in floating window
+map("n", "<leader>dd", vim.diagnostic.open_float, { desc = "Show diagnostics in float" })
+
+-- ============================================================
+-- Quickfix
+-- ============================================================
 map("n", "<leader>qo", "<cmd>copen<CR>", { desc = "Open quickfix window" })
 map("n", "<leader>qc", "<cmd>cclose<CR>", { desc = "Close quickfix window" })
 
@@ -18,6 +40,11 @@ map("v", "<A-k>", ":m '<-2<CR>gv=gv", { desc = "Move selection up" })
 
 -- map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")
 --
+-- Toggle relative numbers
+map("n", "<A-r>", function()
+  vim.o.relativenumber = not vim.o.relativenumber
+end, { desc = "Toggle relative numbers" })
+
 -- Debugging Mappings
 map("n", "<F5>", function()
   require("dap").continue()

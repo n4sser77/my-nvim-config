@@ -1,0 +1,13 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "nvim-dap-virtual-text": {
+      "type": "remote",
+      "url": "https://gitmcp.io/theHamsta/nvim-dap-virtual-text"
+    },
+    "easy-dotnet.nvim Docs": {
+      "type": "remote",
+      "url": "https://gitmcp.io/GustavEikaas/easy-dotnet.nvim"
+    }
+  }
+}
