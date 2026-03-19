@@ -332,7 +332,7 @@ return {
                 "github:Crashdummyy/mason-registry",
             }
 
-            -- Ensure the TS server is actually installed
+            -- Ensure all tools are installed on every machine
             opts.ensure_installed = opts.ensure_installed or {}
             local necessary_servers = {
                 -- JS/TS
@@ -341,12 +341,17 @@ return {
                 "css-lsp",
                 "biome",
                 -- JSON
-                "jsonls",
+                "json-lsp",
                 "prettier",
                 -- XML
                 "lemminx",
                 -- Lua
+                "lua-language-server",
                 "stylua",
+                -- Markdown
+                "markdown-oxide",
+                -- C# / .NET
+                "netcoredbg",
             }
 
             for _, server in ipairs(necessary_servers) do
